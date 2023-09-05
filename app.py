@@ -9,17 +9,6 @@ def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
     return conn
 
-# buzz = Buzzer(17)
-# button = Button(26)
-
-# def tryer():
-#     buzz.on()
-#     print("how")
-#     sleep(0.5)
-
-# button.when_pressed = buzz.on
-# button.when_pressed = tryer
-# button.when_released = buzz.off
 
 @app.post('/')
 @app.get('/')
