@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import geocoder
 from flask_mail import Mail, Message
+from gpiozero import LED, Buzzer
 
 load_dotenv()
 
@@ -18,7 +19,8 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
-
+buzzer = Buzzer(17)
+red = LED(26)
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
@@ -99,6 +101,10 @@ def home():
     # get_computer_location()
     return render_template('greetings.html')
 
+@app.route('/notification')
+def notification():
+    # get_computer_location()
+    return render_template('home.html')
 # def get_location():
 #     url='http://ipinfo.io/json'
 #     response=urlopen(url)
@@ -167,7 +173,7 @@ def send_personal_mail():
 @app.post('/turnOff')
 def turnOff():
     buzzerOff()
-    return redirect("/home")
+    return redirect("/notification")
 
 
 if __name__ == '__main__':
