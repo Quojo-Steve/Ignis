@@ -1,5 +1,13 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import json
+from urllib.request import urlopen
+from dotenv import load_dotenv
+import os
+import geocoder
+from flask_mail import Mail, Message
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['MAIL_SERVER']=str(os.getenv('MAIL_SERVER'))
