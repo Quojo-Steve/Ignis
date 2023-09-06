@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ignis</title>
+    <link rel="shortcut icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.ES57zvudfOcNfPu7IGELewHaJ1%26pid%3DApi&f=1&ipt=27e1e62ab46753f5887a26f6bbb9b9aa2307ba2b0210751d84049fafacc97b3b&ipo=images" type="image/x-icon">
     <link rel="stylesheet" href="/static/css/home.css">
 </head>
 <body>
-    <nav>
-        <img src="/static/img/kanchanara-WL7lswGZ4s4-unsplash.jpg" alt="">
-    </nav>
     <div class="container">
         <div class="con">
-            <h1>There is Fire!!!</h1>
-            <form action="/" method="post">
+            <marquee behavior="" direction="">
+                <h1>A fire has been detected!!!</h1>
+            </marquee>
+            <iframe src="http://172.32.0.238:8080/video" frameborder="0"></iframe>
+            <form action="/turnOff" method="post">
                 <button type="submit" class="turnoff">Turn off Buzzer</button>
             </form>
             <form action="/" method="post">
-                <button type="submit" class="turnoff">Call Fire Service</button>
+                <a class="turnoff" href="tel:+233 0055879">Call Fire Service</a>
             </form>
         </div>
     </div>

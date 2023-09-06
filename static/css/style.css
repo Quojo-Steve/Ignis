@@ -9,7 +9,9 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: url(/static/img/kanchanara-WL7lswGZ4s4-unsplash.jpg);
+    background: url(/static/img/bgimage.jpg);
+    background-position: center;
+    background-size: cover;
 }
 .container{
     width: 330px;
@@ -17,6 +19,7 @@ body{
     border-radius: 5px;
     text-align: center;
     padding: 50px 35px 10px 35px;
+    color: white;
 }
 .container header{
     font-size: 35px;

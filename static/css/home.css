@@ -7,22 +7,18 @@
 body{
     background: rgb(248, 242, 242);
 }
-
-nav{
-    background-color: blueviolet;
-    display: flex;
-    padding: 10px;
-    justify-content: flex-end;
-    align-items: center;
+h1{
+    text-transform: capitalize;
 }
-
-nav img{
-    margin-right: 20px;
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
+iframe{
+    height: 250px;
+    width: 400px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.384);
+    background-color: rgb(248, 242, 242);
+    box-shadow: inset 0px 5px 15px 5px rgba(0, 0, 0, 0.295);
+    margin-bottom: 2rem;
 }
-
 .container{
     display: flex;
     justify-content: center;
@@ -35,15 +31,23 @@ nav img{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 2rem;
 }
 
 .turnoff{
+    padding: 1rem 5rem;
     height: 80px;
-    width: 250px;
+    width: fit-content;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 25px;
     border-radius: 20px;
-    background: red;
-    color: white;
+    background: rgb(231, 25, 25);
+    color: rgb(248, 242, 242);
     border: none;
+    box-shadow: 0px 5px 15px 1px rgba(0, 0, 0, 0.295);
+    cursor: pointer;
+    text-decoration: none;
+}
+.turnoff:hover{
+    background: rgb(241, 69, 69);
 }

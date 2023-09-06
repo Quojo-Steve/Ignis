@@ -1,13 +1,5 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
-import json
-from urllib.request import urlopen
-from dotenv import load_dotenv
-import os
-import geocoder
-from flask_mail import Mail, Message
-
-load_dotenv()
 
 app = Flask(__name__)
 app.config['MAIL_SERVER']=str(os.getenv('MAIL_SERVER'))
@@ -23,6 +15,11 @@ mail = Mail(app)
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
     return conn
+
+def buzzerOff():
+    buzzer.off()
+    red.off()
+    print("Buzzer off")
 
 def create_user_table():
     try:
@@ -156,6 +153,13 @@ def send_personal_mail():
         print("sent")
     except Exception as e:
         return e
+
+
+
+@app.post('/turnOff')
+def turnOff():
+    buzzerOff()
+    return redirect("/home")
 
 
 if __name__ == '__main__':
