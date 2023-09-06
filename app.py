@@ -1,7 +1,24 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import json
+from urllib.request import urlopen
+from dotenv import load_dotenv
+import os
+import geocoder
+from flask_mail import Mail, Message
+
+load_dotenv()
 
 app = Flask(__name__)
+app.config['MAIL_SERVER']=str(os.getenv('MAIL_SERVER'))
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
+app.config['MAIL_USERNAME'] = str(os.getenv('MAIL_USERNAME'))
+app.config['MAIL_PASSWORD'] = str(os.getenv('MAIL_PASSWORD'))
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
+
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
@@ -18,7 +35,9 @@ def create_user_table():
                 email TEXT UNIQUE NOT NULL,
                 phone_no TEXT UNIQUE NOT NULL,
                 enumber TEXT NOT NULL,
-                eemail TEXT NOT NULL 
+                eemail TEXT NOT NULL,
+                address TEXT NOT NULL,
+                coordinates TEXT NOT NULL
             );
         ''')
         con.commit()
@@ -48,16 +67,19 @@ def index():
             number = request.form['number']
             emergencynumber = request.form['emergencynumber']
             emergencyemail = request.form['emergencyemail']
+            address = request.form['address']
 
             create_user_table()
+            coordinates = get_computer_location()
+            print(coordinates)
 
             try:
                 con = connect_to_db()
                 con.execute('''
                     INSERT INTO users(
-                        firstname, lastname, email, phone_no, enumber, eemail
-                    ) VALUES (?,?,?,?,?,?)
-                ''',(fname, lname, email, number, emergencynumber, emergencyemail))
+                        firstname, lastname, email, phone_no, enumber, eemail, address, coordinates
+                    ) VALUES (?,?,?,?,?,?,?,?)
+                ''',(fname, lname, email, number, emergencynumber, emergencyemail,address,coordinates))
                 con.commit()
                 con.close()
                 return redirect('/home')
@@ -67,7 +89,74 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    send_mail_to_fire()
+    send_personal_mail()
+    # get_computer_location()
+    return render_template('greetings.html')
+
+# def get_location():
+#     url='http://ipinfo.io/json'
+#     response=urlopen(url)
+#     data=json.load(response)
+#     return data['loc']
+
+def get_computer_location():
+    try:
+        # Use the IPinfo service to get the computer's location based on its IP address
+        g = geocoder.ip('me')
+
+        if g.ok:
+            location = g.json
+            cor = f"{location['lat']} {location['lng']}"
+            return cor
+        else:
+            return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def send_mail_to_fire():
+    conn = connect_to_db()
+    query = "SELECT * FROM users"
+    result = conn.execute(query)
+    user_data = result.fetchone()
+    conn.close()
+    message = Message(
+        subject=f"There seems to be a fire problem at {user_data[1]}'s place",
+        recipients=[f"{user_data[6]}"],
+        sender=user_data[3]
+    )
+    message.body = f"This is the co-ordinates to the location {user_data[8]} \nThe location is {user_data[7]}"
+    
+    try:
+        mail.send(message)
+        print("sent")
+    except Exception as e:
+        return e
+
+def send_personal_mail():
+    conn = connect_to_db()
+    query = "SELECT * FROM users"
+    result = conn.execute(query)
+    user_data = result.fetchone()
+    conn.close()
+    message = Message(
+        subject=f"There seems to be a fire problem at your place",
+        recipients=[f"{user_data[3]}"],
+        sender="ignissystem@gmail.com"
+    )
+    message.body = """<html><body>
+                <p>Hello,</p>
+                <p>Click the link below:</p>
+                <a href="https://www.example.com">Visit Example Website</a>
+                </body></html>"""
+    
+    try:
+        mail.send(message)
+        print("sent")
+    except Exception as e:
+        return e
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

@@ -1,5 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Poppins;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Poppins;
+    text-align: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+header {
+    margin: 20px 0;
+}
+
+header h1{
+    font-size: 70px;
+}
+
+.ignite {
+    color: #ff6f61; /* Flame color */
+}
+
+.content {
+    padding: 20px;
+}
+
+.content p{
+    font-size: large;
+}
+
+h2 {
+    font-size: 50px;
+    margin: 20px 0;
+}
+
+a {
+    color: #ff6f61;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #000;
+    padding: 10px 0;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+/* Flame animation - You can add this for a subtle flame effect */
+@keyframes flame {
+    0% { color: #ff6f61; }
+    50% { color: #ffbb55; }
+    100% { color: #ff6f61; }
+}
+
+.ignite {
+    animation: flame 2s infinite;
 }
