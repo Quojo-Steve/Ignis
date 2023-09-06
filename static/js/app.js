@@ -15,6 +15,8 @@ const email = document.querySelector(".em");
 const phone = document.querySelector(".pn");
 const en = document.querySelector(".en");
 const fireem = document.querySelector(".fireem");
+const address = document.querySelector(".address");
+
 
 let max = 4;
 let current = 1;
@@ -50,11 +52,17 @@ nextBtnSec.addEventListener("click", (e) => {
 });
 nextBtnThird.addEventListener("click", (e) => {
   e.preventDefault();
+  if (address.value.trim() === "") {
+    setTimeout(() => {
+      alert("Please input your address");
+    }, 800);
+  } else {
   slidePage.style.marginLeft = "-75%";
   bullet[current - 1].classList.add("active");
   progressText[current - 1].classList.add("active");
   progressCheck[current - 1].classList.add("active");
   current += 1;
+}
 });
 submitBtn.addEventListener("click", () => {
   if (en.value.trim() === "" && fireem.value.trim() === "") {
@@ -66,10 +74,6 @@ submitBtn.addEventListener("click", () => {
     progressText[current - 1].classList.add("active");
     progressCheck[current - 1].classList.add("active");
     current += 1;
-    setTimeout(() => {
-      alert("You're all setup");
-      location.reload();
-    }, 800);
   }
 });
 prevBtnSec.addEventListener("click", (e) => {
