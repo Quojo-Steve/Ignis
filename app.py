@@ -1,11 +1,24 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from gpiozero import Button, LED, InputDevice, Buzzer
+from signal import pause
+import RPi.GPIO as GPIO
+import time
+# from test import buzzerOff
+
+buzzer = Buzzer(17)
+red = LED(26)
 
 app = Flask(__name__)
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
     return conn
+
+def buzzerOff():
+    buzzer.off()
+    red.off()
+    print("Buzzer off")
 
 def create_user_table():
     try:
@@ -68,6 +81,13 @@ def index():
 @app.route('/home')
 def home():
     return render_template('home.html')
+
+
+@app.post('/turnOff')
+def turnOff():
+    buzzerOff()
+    return redirect("/home")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
