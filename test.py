@@ -3,7 +3,7 @@ from signal import pause
 import RPi.GPIO as GPIO
 import time
 
-isFlameActive = False
+
 buzzer = Buzzer(17)
 red = LED(26)
 green = LED(25)
