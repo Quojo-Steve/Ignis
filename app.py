@@ -96,24 +96,23 @@ def index():
 
 @app.route('/home')
 def home():
-    send_mail_to_fire()
-    send_personal_mail()
+    # send_mail_to_fire()
+    # send_personal_mail()
     # get_computer_location()
     return render_template('greetings.html')
 
 @app.route('/notification')
 def notification():
-    # get_computer_location()
-    return render_template('home.html')
-# def get_location():
-#     url='http://ipinfo.io/json'
-#     response=urlopen(url)
-#     data=json.load(response)
-#     return data['loc']
+    conn = connect_to_db()
+    query = "SELECT * FROM users"
+    result = conn.execute(query)
+    user_data = result.fetchone()
+    conn.close()
+    number = user_data[5]
+    return render_template('home.html',number=number)
 
 def get_computer_location():
     try:
-        # Use the IPinfo service to get the computer's location based on its IP address
         g = geocoder.ip('me')
 
         if g.ok:
@@ -137,7 +136,7 @@ def send_mail_to_fire():
         recipients=[f"{user_data[6]}"],
         sender=user_data[3]
     )
-    message.body = f"This is the co-ordinates to the location {user_data[8]} \nThe location is {user_data[7]}"
+    message.body = f"These are the co-ordinates to the location {user_data[8]} \nThe location is {user_data[7]}"
     
     try:
         mail.send(message)
@@ -159,7 +158,7 @@ def send_personal_mail():
     message.body = """<html><body>
                 <p>Hello,</p>
                 <p>Click the link below:</p>
-                <a href="https://www.example.com">Visit Example Website</a>
+                <a href="localhost:8000/notification">Visit Example Website</a>
                 </body></html>"""
     
     try:
