@@ -19,17 +19,17 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
-buzzer = Buzzer(17)
-red = LED(26)
+# buzzer = Buzzer(17)
+# red = LED(26)
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
     return conn
 
-def buzzerOff():
-    buzzer.off()
-    red.off()
-    print("Buzzer off")
+# def buzzerOff():
+#     buzzer.off()
+#     red.off()
+#     print("Buzzer off")
 
 def create_user_table():
     try:
@@ -170,10 +170,10 @@ def send_personal_mail():
 
 
 
-@app.post('/turnOff')
-def turnOff():
-    buzzerOff()
-    return redirect("/notification")
+# @app.post('/turnOff')
+# def turnOff():
+#     buzzerOff()
+#     return redirect("/notification")
 
 
 if __name__ == '__main__':
