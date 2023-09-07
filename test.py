@@ -6,19 +6,11 @@ from dotenv import load_dotenv
 import os
 from flask_mail import Mail, Message
 import time
+from email.message import EmailMessage
+import ssl
+import smtplib
 from flask import Flask
 
-load_dotenv()
-
-app = Flask(__name__)
-app.config['MAIL_SERVER']=str(os.getenv('MAIL_SERVER'))
-app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
-app.config['MAIL_USERNAME'] = str(os.getenv('MAIL_USERNAME'))
-app.config['MAIL_PASSWORD'] = str(os.getenv('MAIL_PASSWORD'))
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-
-mail = Mail(app)
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
@@ -36,22 +28,25 @@ def send_personal_mail():
     result = conn.execute(query)
     user_data = result.fetchone()
     conn.close()
-    message = Message(
-        subject=f"There seems to be a fire problem at your place",
-        recipients=[f"{user_data[3]}"],
-        sender="ignissystem@gmail.com"
-    )
-    message.body = """<html><body>
-                <p>Hello,</p>
-                <p>Click the link below:</p>
-                <a href="localhost:8000/notification">Visit Example Website</a>
-                </body></html>"""
-    
-    try:
-        mail.send(message)
-        print("sent")
-    except Exception as e:
-        return e
+    sender_email = 'ignisfiresystem@gmail.com'
+    sender_password = 'zqas taxp vtlb trfk'  # Make sure to use your actual email password
+
+    email_receiver = user_data[3]
+
+    subject = 'Subject of the Email'
+    body = 'This is the body of the email.'
+
+    em = EmailMessage()
+    em['From'] = sender_email
+    em['To'] = email_receiver
+    em['subject'] = subject 
+    em.set_content(body)
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(sender_email, sender_password)
+        smtp.sendmail(sender_email, email_receiver, em.as_string())
 
 
 GPIO.setmode(GPIO.BCM)
