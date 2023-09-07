@@ -1,15 +1,12 @@
 from gpiozero import Button, LED, InputDevice, Buzzer
 from signal import pause
 import RPi.GPIO as GPIO
-import sqlite3
-from dotenv import load_dotenv
-import os
-from flask_mail import Mail, Message
 import time
 from email.message import EmailMessage
 import ssl
 import smtplib
 from flask import Flask
+import sqlite3
 
 
 def connect_to_db() -> sqlite3.Connection:
@@ -70,7 +67,6 @@ def callback(channel):
     buzzer.on()
     red.on()
     print("flame detected !")
-    send_personal_mail()
     if button.is_pressed:
         buzzerOff()
     

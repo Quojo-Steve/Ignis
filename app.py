@@ -155,18 +155,13 @@ def send_personal_mail():
         recipients=[f"{user_data[3]}"],
         sender="ignissystem@gmail.com"
     )
-    message.body = """<html><body>
-                <p>Hello,</p>
-                <p>Click the link below:</p>
-                <a href="localhost:8000/notification">Visit Example Website</a>
-                </body></html>"""
+    message.body = "Use this link to access your device:  https://8d2a-169-239-248-162.ngrok-free.app/notification"
     
     try:
         mail.send(message)
         print("sent")
     except Exception as e:
         return e
-
 
 
 @app.post('/turnOff')
