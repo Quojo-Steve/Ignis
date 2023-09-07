@@ -19,17 +19,17 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
-# buzzer = Buzzer(17)
-# red = LED(26)
+buzzer = Buzzer(17)
+red = LED(26)
 
 def connect_to_db() -> sqlite3.Connection:
     conn = sqlite3.connect('database.db')
     return conn
 
-# def buzzerOff():
-#     buzzer.off()
-#     red.off()
-#     print("Buzzer off")
+def buzzerOff():
+    buzzer.off()
+    red.off()
+    print("Buzzer off")
 
 def create_user_table():
     try:
@@ -155,11 +155,7 @@ def send_personal_mail():
         recipients=[f"{user_data[3]}"],
         sender="ignissystem@gmail.com"
     )
-    message.body = """<html><body>
-                <p>Hello,</p>
-                <p>Click the link below:</p>
-                <a href="localhost:8000/notification">Visit Example Website</a>
-                </body></html>"""
+    message.body = "Use this link to access your device:  https://8d2a-169-239-248-162.ngrok-free.app/notification"
     
     try:
         mail.send(message)
@@ -168,11 +164,10 @@ def send_personal_mail():
         return e
 
 
-
-# @app.post('/turnOff')
-# def turnOff():
-#     buzzerOff()
-#     return redirect("/notification")
+@app.post('/turnOff')
+def turnOff():
+    buzzerOff()
+    return redirect("/notification")
 
 
 if __name__ == '__main__':
