@@ -30,8 +30,8 @@ def send_personal_mail():
 
     email_receiver = user_data[3]
 
-    subject = 'Subject of the Email'
-    body = 'This is the body of the email.'
+    subject = 'A Fire Has Been Detected!!!'
+    body = 'Follow this link to access your device controls:  https://8d2a-169-239-248-162.ngrok-free.app/notification'
 
     em = EmailMessage()
     em['From'] = sender_email
@@ -67,6 +67,7 @@ def callback(channel):
     buzzer.on()
     red.on()
     print("flame detected !")
+    send_personal_mail()
     if button.is_pressed:
         buzzerOff()
     

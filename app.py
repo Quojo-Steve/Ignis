@@ -91,7 +91,7 @@ def index():
                 con.close()
                 return redirect('/home')
             except sqlite3.Error as e:
-                return str(e)
+                return render_template("404page.html")
         return render_template('index.html')
 
 @app.route('/home')
