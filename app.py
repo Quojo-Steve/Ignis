@@ -7,8 +7,11 @@ import os
 import geocoder
 from flask_mail import Mail, Message
 from gpiozero import LED, Buzzer
+import middleware
 
 load_dotenv()
+
+
 
 app = Flask(__name__)
 app.config['MAIL_SERVER']=str(os.getenv('MAIL_SERVER'))
@@ -30,6 +33,9 @@ def buzzerOff():
     buzzer.off()
     red.off()
     print("Buzzer off")
+    with open("middleware.py", "w") as fo:
+        fo.write("fire_alert = False")
+    print(middleware.fire_alert)
 
 def create_user_table():
     try:
@@ -125,43 +131,43 @@ def get_computer_location():
         print(f"Error: {e}")
         return None
 
-def send_mail_to_fire():
-    conn = connect_to_db()
-    query = "SELECT * FROM users"
-    result = conn.execute(query)
-    user_data = result.fetchone()
-    conn.close()
-    message = Message(
-        subject=f"There seems to be a fire problem at {user_data[1]}'s place",
-        recipients=[f"{user_data[6]}"],
-        sender=user_data[3]
-    )
-    message.body = f"These are the co-ordinates to the location {user_data[8]} \nThe location is {user_data[7]}"
+# def send_mail_to_fire():
+#     conn = connect_to_db()
+#     query = "SELECT * FROM users"
+#     result = conn.execute(query)
+#     user_data = result.fetchone()
+#     conn.close()
+#     message = Message(
+#         subject=f"There seems to be a fire problem at {user_data[1]}'s place",
+#         recipients=[f"{user_data[6]}"],
+#         sender=user_data[3]
+#     )
+#     message.body = f"These are the co-ordinates to the location {user_data[8]} \nThe location is {user_data[7]}"
     
-    try:
-        mail.send(message)
-        print("sent")
-    except Exception as e:
-        return e
+#     try:
+#         mail.send(message)
+#         print("sent")
+#     except Exception as e:
+#         return e
 
-def send_personal_mail():
-    conn = connect_to_db()
-    query = "SELECT * FROM users"
-    result = conn.execute(query)
-    user_data = result.fetchone()
-    conn.close()
-    message = Message(
-        subject=f"There seems to be a fire problem at your place",
-        recipients=[f"{user_data[3]}"],
-        sender="ignissystem@gmail.com"
-    )
-    message.body = "Use this link to access your device:  https://8d2a-169-239-248-162.ngrok-free.app/notification"
+# def send_personal_mail():
+#     conn = connect_to_db()
+#     query = "SELECT * FROM users"
+#     result = conn.execute(query)
+#     user_data = result.fetchone()
+#     conn.close()
+#     message = Message(
+#         subject=f"There seems to be a fire problem at your place",
+#         recipients=[f"{user_data[3]}"],
+#         sender="ignissystem@gmail.com"
+#     )
+#     message.body = "Use this link to access your device:  https://8d2a-169-239-248-162.ngrok-free.app/notification"
     
-    try:
-        mail.send(message)
-        print("sent")
-    except Exception as e:
-        return e
+#     try:
+#         mail.send(message)
+#         print("sent")
+#     except Exception as e:
+#         return e
 
 
 @app.post('/turnOff')
