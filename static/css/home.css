@@ -12,8 +12,8 @@ h1{
 }
 
 iframe{
-    height: 250px;
-    width: 400px;
+    height: 300px;
+    width: 600px;
     border-radius: 15px;
     border: 1px solid rgba(0, 0, 0, 0.384);
     background-color: rgb(248, 242, 242);
@@ -22,9 +22,6 @@ iframe{
     overflow: hidden;
     object-position: center;
     object-fit: cover;
-}
-iframe html{
-    overflow: hidden;
 }
 
 .container{
